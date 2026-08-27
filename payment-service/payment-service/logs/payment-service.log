@@ -1,0 +1,14 @@
+2026-08-27T10:42:09.413+05:30  INFO 4380 --- [payment-service] [main] c.p.p.PaymentServiceApplication          : Starting PaymentServiceApplication using Java 21.0.10 with PID 4380 (C:\Users\Prathibha\Downloads\payment-service\payment-service\target\classes started by Prathibha in C:\Users\Prathibha\Downloads\payment-service\payment-service)
+2026-08-27T10:42:09.420+05:30  INFO 4380 --- [payment-service] [main] c.p.p.PaymentServiceApplication          : No active profile set, falling back to 1 default profile: "default"
+2026-08-27T10:42:10.318+05:30  INFO 4380 --- [payment-service] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8084 (http)
+2026-08-27T10:42:10.336+05:30  INFO 4380 --- [payment-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-27T10:42:10.336+05:30  INFO 4380 --- [payment-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-08-27T10:42:10.386+05:30  INFO 4380 --- [payment-service] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 915 ms
+2026-08-27T10:42:10.820+05:30  INFO 4380 --- [payment-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-08-27T10:42:10.870+05:30  INFO 4380 --- [payment-service] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8084 (http) with context path '/'
+2026-08-27T10:42:10.877+05:30  INFO 4380 --- [payment-service] [main] c.p.p.PaymentServiceApplication          : Started PaymentServiceApplication in 1.895 seconds (process running for 2.192)
+2026-08-27T10:42:18.878+05:30  INFO 4380 --- [payment-service] [http-nio-8084-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-27T10:42:18.878+05:30  INFO 4380 --- [payment-service] [http-nio-8084-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-27T10:42:18.887+05:30  INFO 4380 --- [payment-service] [http-nio-8084-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2026-08-27T10:42:18.944+05:30  INFO 4380 --- [payment-service] [http-nio-8084-exec-1] c.p.p.controller.PaymentController       : Received payment request for user: Prathibha
+2026-08-27T10:42:18.952+05:30  INFO 4380 --- [payment-service] [http-nio-8084-exec-1] c.p.p.controller.PaymentController       : Payment processed successfully for user: Prathibha

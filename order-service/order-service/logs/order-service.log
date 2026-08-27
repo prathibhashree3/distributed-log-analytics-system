@@ -1,0 +1,28 @@
+2026-08-27T10:35:43.489+05:30  INFO 31152 --- [order-service] [main] c.v.o.OrderServiceApplication            : Starting OrderServiceApplication using Java 21.0.10 with PID 31152 (C:\Users\Prathibha\Downloads\order-service\order-service\target\classes started by Prathibha in C:\Users\Prathibha\Downloads\order-service\order-service)
+2026-08-27T10:35:43.496+05:30  INFO 31152 --- [order-service] [main] c.v.o.OrderServiceApplication            : No active profile set, falling back to 1 default profile: "default"
+2026-08-27T10:35:44.276+05:30  INFO 31152 --- [order-service] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8083 (http)
+2026-08-27T10:35:44.320+05:30  INFO 31152 --- [order-service] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-08-27T10:35:44.320+05:30  INFO 31152 --- [order-service] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.24]
+2026-08-27T10:35:44.363+05:30  INFO 31152 --- [order-service] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 823 ms
+2026-08-27T10:35:44.900+05:30  INFO 31152 --- [order-service] [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint beneath base path '/actuator'
+2026-08-27T10:35:44.942+05:30  INFO 31152 --- [order-service] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8083 (http) with context path '/'
+2026-08-27T10:35:44.947+05:30  INFO 31152 --- [order-service] [main] c.v.o.OrderServiceApplication            : Started OrderServiceApplication in 1.859 seconds (process running for 2.145)
+2026-08-27T10:36:46.185+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-08-27T10:36:46.185+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-08-27T10:36:46.190+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 4 ms
+2026-08-27T10:36:46.240+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-1] c.v.o.controller.OrderController         : Received order request for product: Laptop from user: Prathibha
+2026-08-27T10:36:46.327+05:30 ERROR 31152 --- [order-service] [http-nio-8083-exec-1] c.v.o.controller.OrderController         : Order processing failed: I/O error on GET request for "http://localhost:8082/users/Prathibha": null
+2026-08-27T10:38:18.454+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : Received order request for product: Laptop from user: Prathibha
+2026-08-27T10:38:18.628+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : User Service response: User details for: Prathibha
+2026-08-27T10:38:18.628+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : User verified successfully: Prathibha
+2026-08-27T10:38:18.641+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : Inventory Service response: Stock available for: Laptop
+2026-08-27T10:38:18.644+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : Product is available in inventory: Laptop
+2026-08-27T10:38:18.644+05:30 ERROR 31152 --- [order-service] [http-nio-8083-exec-5] c.v.o.controller.OrderController         : Order processing failed: I/O error on POST request for "http://localhost:8084/payments": null
+2026-08-27T10:42:18.766+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Received order request for product: Laptop from user: Prathibha
+2026-08-27T10:42:18.778+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : User Service response: User details for: Prathibha
+2026-08-27T10:42:18.778+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : User verified successfully: Prathibha
+2026-08-27T10:42:18.790+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Inventory Service response: Stock available for: Laptop
+2026-08-27T10:42:18.790+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Product is available in inventory: Laptop
+2026-08-27T10:42:18.980+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Payment Service response: Payment successful for user: Prathibha
+2026-08-27T10:42:18.980+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Payment successful for user: Prathibha
+2026-08-27T10:42:18.980+05:30  INFO 31152 --- [order-service] [http-nio-8083-exec-8] c.v.o.controller.OrderController         : Order created successfully for product: Laptop by user: Prathibha
