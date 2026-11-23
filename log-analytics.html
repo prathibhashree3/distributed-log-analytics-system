@@ -1,0 +1,204 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogSphere Store | Electronics</title>
+    <link rel="stylesheet" href="log-analytics.css">
+</head>
+<body>
+
+<header class="store-header">
+    <a href="log-analytics.html" class="store-brand">
+        <span class="brand-icon">L</span>
+        <span>LogSphere<span class="brand-store">store</span></span>
+    </a>
+
+    <form class="search-bar" id="searchForm">
+        <input
+            type="search"
+            id="searchInput"
+            placeholder="Search laptops, mobiles, accessories..."
+            aria-label="Search products"
+        >
+        <button type="submit" aria-label="Search">⌕</button>
+    </form>
+
+    <div class="header-actions">
+        <div class="account-details">
+            <span class="account-label">Signed in as</span>
+            <strong id="currentUser">User</strong>
+            <small id="currentRole">USER</small>
+        </div>
+
+        <button type="button" id="cartButton" class="cart-button">
+            🛒 Cart <span id="cartCount">0</span>
+        </button>
+
+        <button type="button" id="logoutButton" class="logout-button">
+            Log out
+        </button>
+    </div>
+</header>
+
+<nav class="category-nav" aria-label="Product categories">
+    <a href="#products" class="category-link active" data-category="All">
+        All products
+    </a>
+    <a href="#products" class="category-link" data-category="Laptop">
+        Laptops
+    </a>
+    <a href="#products" class="category-link" data-category="Mobile">
+        Mobiles
+    </a>
+    <a href="#products" class="category-link" data-category="Headphones">
+        Headphones
+    </a>
+    <a href="#products" class="category-link" data-category="Keyboard">
+        Keyboards
+    </a>
+    <a href="ai-dashboard.html" id="aiLink" class="category-link admin-link" hidden>
+        AI Analytics
+    </a>
+</nav>
+
+<main class="store-main">
+
+    <section class="store-intro">
+        <div>
+            <p class="intro-kicker">THE ELECTRONICS STORE</p>
+            <h1>Find your next favourite.</h1>
+            <p>Everyday tech for work, study and everything in between.</p>
+        </div>
+        <div class="intro-decoration" aria-hidden="true">TECH.</div>
+    </section>
+
+    <section class="store-toolbar">
+        <div>
+            <h2 id="products">Shop electronics</h2>
+            <p>Browse our product selection.</p>
+        </div>
+
+        <label class="sort-control">
+            Sort by
+            <select id="sortSelect">
+                <option value="featured">Featured</option>
+                <option value="price-low">Price: Low to high</option>
+                <option value="price-high">Price: High to low</option>
+                <option value="name">Name: A to Z</option>
+            </select>
+        </label>
+    </section>
+
+    <p id="pageMessage" class="page-message" role="status" aria-live="polite"></p>
+
+    <section class="product-grid" id="productGrid">
+
+        <article class="product-card" data-product="Laptop" data-category="Laptop" data-price="49999">
+            <div class="product-image laptop-image">
+                <span class="product-tag">Popular</span>
+                <img
+                    src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=700&q=80"
+                    alt="Laptop computer"
+                    loading="lazy"
+                >
+            </div>
+            <div class="product-details">
+                <p class="product-category">Computers</p>
+                <h3>Laptop</h3>
+                <p class="product-description">A dependable everyday laptop for work and study.</p>
+                <div class="product-rating">★★★★☆ <span>Customer favourite</span></div>
+                <div class="product-purchase">
+                    <strong class="product-price">₹49,999</strong>
+                    <button type="button" class="add-to-cart" data-add="Laptop">
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <article class="product-card" data-product="Mobile" data-category="Mobile" data-price="24999">
+            <div class="product-image mobile-image">
+                <img
+                    src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=700&q=80"
+                    alt="Smartphone"
+                    loading="lazy"
+                >
+            </div>
+            <div class="product-details">
+                <p class="product-category">Mobiles</p>
+                <h3>Mobile</h3>
+                <p class="product-description">Stay connected with a modern everyday smartphone.</p>
+                <div class="product-rating">★★★★☆ <span>Everyday essential</span></div>
+                <div class="product-purchase">
+                    <strong class="product-price">₹24,999</strong>
+                    <button type="button" class="add-to-cart" data-add="Mobile">
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <article class="product-card" data-product="Headphones" data-category="Headphones" data-price="2999">
+            <div class="product-image headphones-image">
+                <img
+                    src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=700&q=80"
+                    alt="Over-ear headphones"
+                    loading="lazy"
+                >
+            </div>
+            <div class="product-details">
+                <p class="product-category">Audio</p>
+                <h3>Headphones</h3>
+                <p class="product-description">Comfortable listening for music, calls and downtime.</p>
+                <div class="product-rating">★★★★☆ <span>Audio essentials</span></div>
+                <div class="product-purchase">
+                    <strong class="product-price">₹2,999</strong>
+                    <button type="button" class="add-to-cart" data-add="Headphones">
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </article>
+
+        <article class="product-card" data-product="Keyboard" data-category="Keyboard" data-price="1499">
+            <div class="product-image keyboard-image">
+                <img
+                    src="https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=700&q=80"
+                    alt="Computer keyboard"
+                    loading="lazy"
+                >
+            </div>
+            <div class="product-details">
+                <p class="product-category">Accessories</p>
+                <h3>Keyboard</h3>
+                <p class="product-description">A practical addition to your desk setup.</p>
+                <div class="product-rating">★★★★☆ <span>Desk essential</span></div>
+                <div class="product-purchase">
+                    <strong class="product-price">₹1,499</strong>
+                    <button type="button" class="add-to-cart" data-add="Keyboard">
+                        Add to cart
+                    </button>
+                </div>
+            </div>
+        </article>
+
+    </section>
+
+    <p id="emptyProducts" class="empty-products" hidden>
+        No products match your search.
+    </p>
+
+</main>
+
+<footer class="store-footer">
+    <a href="log-analytics.html" class="footer-brand">LogSphere store</a>
+    <span>Electronics for everyday life.</span>
+    <span>© 2026 LogSphere</span>
+</footer>
+
+<script src="./log-analytics.js"></script>
+</body>
+</html>
+```

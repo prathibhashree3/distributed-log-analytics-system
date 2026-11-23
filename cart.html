@@ -1,0 +1,232 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogSphere | Shopping Cart</title>
+    <link rel="stylesheet" href="log-analytics.css">
+</head>
+<body>
+
+<header class="store-header">
+    <a href="log-analytics.html" class="store-brand">
+        <span class="brand-icon">L</span>
+        <span>LogSphere<span class="brand-store">store</span></span>
+    </a>
+
+    <nav class="cart-navigation">
+        <a href="log-analytics.html">Continue shopping</a>
+    </nav>
+
+    <div class="header-actions">
+        <div class="account-details">
+            <span class="account-label">Signed in as</span>
+            <strong id="currentUser">User</strong>
+            <small id="currentRole">USER</small>
+        </div>
+
+        <button type="button" id="logoutButton" class="logout-button">
+            Log out
+        </button>
+    </div>
+</header>
+
+<main class="cart-page">
+
+    <div class="cart-page-heading">
+        <div>
+            <p class="cart-breadcrumb">
+                <a href="log-analytics.html">Home</a> / Shopping Cart
+            </p>
+            <h1>Your Shopping Cart</h1>
+            <p>Review your items before completing your purchase.</p>
+        </div>
+
+        <a href="log-analytics.html" class="continue-shopping">
+            Continue shopping
+        </a>
+    </div>
+
+    <div class="cart-layout">
+
+        <section class="cart-items-panel">
+            <div class="cart-panel-heading">
+                <h2>Cart items</h2>
+                <span id="cartItemCount">0 items</span>
+            </div>
+
+            <div id="cartItems" class="cart-items">
+                <div class="cart-empty">
+                    <div class="empty-cart-icon">🛒</div>
+                    <h3>Your cart is empty</h3>
+                    <p>Explore our store and add something you like.</p>
+                    <a href="log-analytics.html" class="checkout-button">
+                        Browse products
+                    </a>
+                </div>
+            </div>
+
+            <div class="cart-bottom-actions">
+                <a href="log-analytics.html" class="text-link">
+                    ← Continue shopping
+                </a>
+
+                <button type="button" id="clearCartButton" class="text-button">
+                    Clear cart
+                </button>
+            </div>
+        </section>
+
+        <aside class="cart-summary-panel">
+
+            <h2>Order summary</h2>
+
+            <div class="summary-line">
+                <span>Items subtotal</span>
+                <strong id="cartSubtotal">₹0.00</strong>
+            </div>
+
+            <div class="summary-line">
+                <span>Shipping</span>
+                <strong id="shippingCost">Free</strong>
+            </div>
+
+            <div class="summary-line">
+                <span>Tax</span>
+                <strong id="taxAmount">₹0.00</strong>
+            </div>
+
+            <div class="summary-divider"></div>
+
+            <div class="summary-total">
+                <span>Total</span>
+                <strong id="cartTotal">₹0.00</strong>
+            </div>
+
+            <section class="address-section">
+                <div class="summary-section-heading">
+                    <h3>Delivery address</h3>
+                </div>
+
+                <form id="addressForm">
+                    <label for="fullName">Full name</label>
+                    <input
+                        type="text"
+                        id="fullName"
+                        name="fullName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                    <label for="addressLine">Street address</label>
+                    <input
+                        type="text"
+                        id="addressLine"
+                        name="addressLine"
+                        placeholder="House number, street"
+                        autocomplete="street-address"
+                        required
+                    >
+
+                    <label for="city">City</label>
+                    <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        placeholder="Enter your city"
+                        autocomplete="address-level2"
+                        required
+                    >
+
+                    <label for="postalCode">PIN code</label>
+                    <input
+                        type="text"
+                        id="postalCode"
+                        name="postalCode"
+                        inputmode="numeric"
+                        pattern="[0-9]{6}"
+                        maxlength="6"
+                        placeholder="6-digit PIN code"
+                        autocomplete="postal-code"
+                        required
+                    >
+
+                    <button type="submit" class="save-address-button">
+                        Save address
+                    </button>
+
+                    <p id="addressMessage" class="cart-feedback"
+                       role="status" aria-live="polite"></p>
+                </form>
+            </section>
+
+            <section class="payment-section">
+                <h3>Payment method</h3>
+
+                <div class="cart-payment-options">
+                    <label class="cart-payment-option">
+                        <input
+                            type="radio"
+                            name="cartPaymentMethod"
+                            value="Card"
+                            checked
+                        >
+                        <span>Card</span>
+                    </label>
+
+                    <label class="cart-payment-option">
+                        <input
+                            type="radio"
+                            name="cartPaymentMethod"
+                            value="UPI"
+                        >
+                        <span>UPI</span>
+                    </label>
+
+                    <label class="cart-payment-option">
+                        <input
+                            type="radio"
+                            name="cartPaymentMethod"
+                            value="Cash"
+                        >
+                        <span>Cash</span>
+                    </label>
+                </div>
+
+                <button type="button" id="checkoutButton" class="checkout-button">
+                    Checkout <span>→</span>
+                </button>
+
+                <p id="checkoutMessage" class="cart-feedback"
+                   role="status" aria-live="polite"></p>
+            </section>
+
+            <a href="log-analytics.html" class="summary-continue-link">
+                Continue shopping
+            </a>
+
+        </aside>
+    </div>
+
+    <section id="cartSuccess" class="cart-success" hidden>
+        <div class="cart-success-icon">✓</div>
+        <h2>Order completed!</h2>
+        <p id="cartSuccessMessage"></p>
+        <a href="log-analytics.html" class="checkout-button">
+            Continue shopping
+        </a>
+    </section>
+
+</main>
+
+<footer class="store-footer">
+    <a href="log-analytics.html" class="footer-brand">LogSphere store</a>
+    <span>Electronics for everyday life.</span>
+    <span>© 2026 LogSphere</span>
+</footer>
+
+<script src="./cart.js"></script>
+</body>
+</html>

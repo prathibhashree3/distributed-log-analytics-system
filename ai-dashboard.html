@@ -1,0 +1,747 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log Analysis | Distributed Log Analytics</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --page: #f5f6f8;
+            --surface: #ffffff;
+            --border: #dfe3e8;
+            --text: #202833;
+            --muted: #687482;
+            --navy: #243b53;
+            --blue: #315f91;
+            --blue-hover: #264d78;
+            --red: #b42318;
+            --amber: #996515;
+            --green: #28794b;
+        }
+
+        body {
+            margin: 0;
+            background: var(--page);
+            color: var(--text);
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        header {
+            min-height: 65px;
+            padding: 15px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 34px;
+            height: 34px;
+            display: grid;
+            place-items: center;
+            background: var(--navy);
+            color: white;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 4px;
+            letter-spacing: .5px;
+        }
+
+        .brand-name {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .brand-subtitle {
+            margin: 2px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .header-label {
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        main {
+            width: min(1380px, 100%);
+            margin: 0 auto;
+            padding: 28px 30px 36px;
+        }
+
+        .page-heading {
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb {
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .page-heading h1 {
+            margin: 0;
+            font-size: 25px;
+            font-weight: 600;
+            letter-spacing: -.4px;
+        }
+
+        .page-heading p {
+            margin: 6px 0 0;
+            max-width: 720px;
+            color: var(--muted);
+        }
+
+        .workspace {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 20px;
+            align-items: start;
+        }
+
+        .panel {
+            min-width: 0;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 5px;
+        }
+
+        .panel-header {
+            padding: 17px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .panel-header h2 {
+            margin: 0;
+            font-size: 15px;
+            font-weight: 600;
+        }
+
+        .panel-header p {
+            margin: 5px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .panel-body {
+            padding: 20px;
+        }
+
+        .field-label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        textarea {
+            display: block;
+            width: 100%;
+            min-height: 180px;
+            padding: 12px;
+            resize: vertical;
+            border: 1px solid #cbd2da;
+            border-radius: 4px;
+            outline: none;
+            background: #fff;
+            color: var(--text);
+            font-family: Consolas, "Courier New", monospace;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        textarea:focus,
+        select:focus {
+            border-color: var(--blue);
+            outline: 2px solid #315f911c;
+        }
+
+        textarea::placeholder {
+            color: #8a939e;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 9px;
+            margin-top: 13px;
+        }
+
+        button,
+        select {
+            min-height: 36px;
+            padding: 8px 12px;
+            border: 1px solid #cbd2da;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 13px;
+        }
+
+        button {
+            background: var(--blue);
+            border-color: var(--blue);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover:not(:disabled) {
+            background: var(--blue-hover);
+            border-color: var(--blue-hover);
+        }
+
+        button.secondary {
+            background: white;
+            border-color: #cbd2da;
+            color: #344255;
+        }
+
+        button.secondary:hover:not(:disabled) {
+            background: #f1f3f5;
+            border-color: #aeb8c3;
+        }
+
+        button:disabled {
+            opacity: .65;
+            cursor: wait;
+        }
+
+        select {
+            background: white;
+            color: var(--text);
+            cursor: pointer;
+        }
+
+        .status {
+            min-height: 20px;
+            margin: 12px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .error {
+            color: var(--red) !important;
+        }
+
+        .result-card {
+            margin-top: 18px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .result-heading {
+            padding: 10px 13px;
+            background: #f7f8fa;
+            border-bottom: 1px solid var(--border);
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .result {
+            min-height: 95px;
+            padding: 14px;
+            color: #364152;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            line-height: 1.7;
+            font-size: 13px;
+        }
+
+        .logs-panel {
+            grid-column: 1 / -1;
+        }
+
+        .logs-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logs-toolbar .controls {
+            margin-top: 0;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            min-width: 700px;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #e8ebef;
+            text-align: left;
+            vertical-align: top;
+            font-size: 12px;
+        }
+
+        th {
+            background: #f7f8fa;
+            color: #586575;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td:first-child {
+            color: #586575;
+            white-space: nowrap;
+        }
+
+        td:nth-child(2) {
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        td:last-child {
+            min-width: 260px;
+            overflow-wrap: anywhere;
+            font-family: Consolas, "Courier New", monospace;
+            line-height: 1.6;
+        }
+
+        tbody tr:hover {
+            background: #fafbfd;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .severity {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .ERROR,
+        .FATAL,
+        .SEVERE {
+            color: var(--red);
+        }
+
+        .WARN,
+        .WARNING {
+            color: var(--amber);
+        }
+
+        .INFO {
+            color: var(--blue);
+        }
+
+        .DEBUG,
+        .TRACE {
+            color: #687482;
+        }
+
+        footer {
+            padding: 18px 30px;
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 850px) {
+            main {
+                padding: 22px 18px 30px;
+            }
+
+            header {
+                padding: 14px 18px;
+            }
+
+            .workspace {
+                grid-template-columns: 1fr;
+            }
+
+            .logs-panel {
+                grid-column: auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-label {
+                display: none;
+            }
+
+            .page-heading h1 {
+                font-size: 22px;
+            }
+
+            .panel-body {
+                padding: 15px;
+            }
+
+            .controls button,
+            .controls select {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <div class="brand">
+        <div class="brand-mark">DLA</div>
+        <div>
+            <p class="brand-name">Distributed Log Analytics</p>
+            <p class="brand-subtitle">Microservices monitoring</p>
+        </div>
+    </div>
+
+    <div class="header-label">Log Analysis Workspace</div>
+</header>
+
+<main>
+    <div class="page-heading">
+        <div class="breadcrumb">Monitoring / Log analysis</div>
+        <h1>Log Analysis</h1>
+        <p>
+            Inspect application logs, investigate errors, and review
+            AI-assisted analysis across your microservices.
+        </p>
+    </div>
+
+    <div class="workspace">
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Manual log analysis</h2>
+                <p>Submit an exception, error message, or application log.</p>
+            </div>
+
+            <div class="panel-body">
+                <label class="field-label" for="errorInput">
+                    Log input
+                </label>
+
+                <textarea
+                    id="errorInput"
+                    placeholder="Paste your application logs here..."
+                    aria-label="Paste error logs"
+                ></textarea>
+
+                <div class="controls">
+                    <button id="manualButton" onclick="analyzeManualErrors()">
+                        Analyze logs
+                    </button>
+
+                    <button class="secondary" onclick="clearManualInput()">
+                        Clear input
+                    </button>
+                </div>
+
+                <p id="manualStatus" class="status" aria-live="polite"></p>
+
+                <div class="result-card">
+                    <div class="result-heading">Analysis result</div>
+                    <div id="manualResult" class="result" aria-live="polite">
+                        Analysis will appear here after submission.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="panel-header">
+                <h2>Analyze indexed errors</h2>
+                <p>Retrieve error-level records from Elasticsearch.</p>
+            </div>
+
+            <div class="panel-body">
+                <label class="field-label" for="errorSize">
+                    Maximum number of error logs
+                </label>
+
+                <div class="controls">
+                    <select id="errorSize" aria-label="Number of error logs">
+                        <option value="20">20 records</option>
+                        <option value="50">50 records</option>
+                        <option value="100" selected>100 records</option>
+                    </select>
+
+                    <button id="elasticButton" onclick="analyzeStoredErrors()">
+                        Analyze errors
+                    </button>
+                </div>
+
+                <p id="elasticStatus" class="status" aria-live="polite"></p>
+
+                <div class="result-card">
+                    <div class="result-heading">Analysis result</div>
+                    <div id="elasticResult" class="result" aria-live="polite">
+                        Run an analysis to review indexed errors.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel logs-panel">
+            <div class="panel-header">
+                <div class="logs-toolbar">
+                    <div>
+                        <h2>Recent microservice logs</h2>
+                        <p>Latest records returned by the log service.</p>
+                    </div>
+
+                    <div class="controls">
+                        <select id="logSize" aria-label="Number of recent logs">
+                            <option value="20">Latest 20</option>
+                            <option value="50">Latest 50</option>
+                            <option value="100">Latest 100</option>
+                        </select>
+
+                        <button onclick="loadLogs()">Refresh logs</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-body">
+                <p id="logsStatus" class="status" aria-live="polite">
+                    Loading recent logs...
+                </p>
+            </div>
+
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Timestamp</th>
+                            <th>Service</th>
+                            <th>Severity</th>
+                            <th>Message</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="logsBody">
+                        <tr>
+                            <td colspan="4">Loading logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
+</main>
+
+<footer>
+    Distributed Log Analytics System
+</footer>
+
+<script>
+    const API_BASE = "http://localhost:8000";
+
+    async function requestJSON(url, options = {}) {
+        const response = await fetch(url, options);
+
+        let data;
+
+        try {
+            data = await response.json();
+        } catch {
+            throw new Error(
+                `The API returned an invalid response (HTTP ${response.status}).`
+            );
+        }
+
+        if (!response.ok) {
+            throw new Error(
+                data.detail || `Request failed: HTTP ${response.status}`
+            );
+        }
+
+        return data;
+    }
+
+    async function analyzeManualErrors() {
+        const logs = document.getElementById("errorInput").value.trim();
+        const button = document.getElementById("manualButton");
+        const status = document.getElementById("manualStatus");
+        const result = document.getElementById("manualResult");
+
+        if (!logs) {
+            status.className = "status error";
+            status.textContent = "Please paste error logs before analyzing.";
+            return;
+        }
+
+        button.disabled = true;
+        status.className = "status";
+        status.textContent = "Analyzing submitted logs...";
+        result.textContent = "";
+
+        try {
+            const data = await requestJSON(
+                `${API_BASE}/analyze-errors`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ logs })
+                }
+            );
+
+            result.textContent = data.analysis || "No analysis was returned.";
+            status.textContent =
+                `Analysis completed · Log lines analyzed: ${data.logs_analyzed}`;
+        } catch (error) {
+            status.className = "status error";
+            status.textContent = `Analysis failed: ${error.message}`;
+            result.textContent =
+                "Check that the Python AI service is running and reachable.";
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    async function analyzeStoredErrors() {
+        const button = document.getElementById("elasticButton");
+        const status = document.getElementById("elasticStatus");
+        const result = document.getElementById("elasticResult");
+        const size = document.getElementById("errorSize").value;
+
+        button.disabled = true;
+        status.className = "status";
+        status.textContent = "Retrieving and analyzing error logs...";
+        result.textContent = "";
+
+        try {
+            const data = await requestJSON(
+                `${API_BASE}/analyze-error-logs?size=${encodeURIComponent(size)}`
+            );
+
+            result.textContent = data.analysis || "No analysis was returned.";
+
+            if (data.logs_analyzed === 0) {
+                status.textContent =
+                    "No matching error-level logs were found among the retrieved records.";
+            } else {
+                status.textContent =
+                    `Analysis completed · Error logs analyzed: ${data.logs_analyzed}` +
+                    (data.services_found?.length
+                        ? ` · Services: ${data.services_found.join(", ")}`
+                        : "");
+            }
+        } catch (error) {
+            status.className = "status error";
+            status.textContent = `Analysis failed: ${error.message}`;
+            result.textContent =
+                "Check the Python API and Elasticsearch connection.";
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    async function loadLogs() {
+        const status = document.getElementById("logsStatus");
+        const body = document.getElementById("logsBody");
+        const size = document.getElementById("logSize").value;
+
+        status.className = "status";
+        status.textContent = "Loading recent logs...";
+        body.replaceChildren();
+
+        try {
+            const data = await requestJSON(
+                `${API_BASE}/logs?size=${encodeURIComponent(size)}`
+            );
+
+            const logs = data.logs || [];
+
+            if (logs.length === 0) {
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+
+                cell.colSpan = 4;
+                cell.textContent = "No logs found.";
+
+                row.appendChild(cell);
+                body.appendChild(row);
+            }
+
+            for (const log of logs) {
+                const row = document.createElement("tr");
+                const severity = String(log.level || "UNKNOWN").toUpperCase();
+
+                const values = [
+                    log.timestamp || "",
+                    log.service || "Unknown",
+                    severity,
+                    log.message || ""
+                ];
+
+                values.forEach((value, index) => {
+                    const cell = document.createElement("td");
+                    cell.textContent = value;
+
+                    if (index === 2) {
+                        cell.className = `severity ${severity}`;
+                    }
+
+                    row.appendChild(cell);
+                });
+
+                body.appendChild(row);
+            }
+
+            status.textContent =
+                `${logs.length} logs displayed · Services: ` +
+                `${(data.services_found || []).join(", ") || "None"}`;
+        } catch (error) {
+            status.className = "status error";
+            status.textContent = `Could not load logs: ${error.message}`;
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 4;
+            cell.textContent = "Unable to retrieve logs.";
+
+            row.appendChild(cell);
+            body.appendChild(row);
+        }
+    }
+
+    function clearManualInput() {
+        document.getElementById("errorInput").value = "";
+        document.getElementById("manualStatus").textContent = "";
+        document.getElementById("manualStatus").className = "status";
+        document.getElementById("manualResult").textContent =
+            "Analysis will appear here after submission.";
+    }
+
+    document.getElementById("logSize").addEventListener("change", loadLogs);
+
+    loadLogs();
+</script>
+</body>
+</html>

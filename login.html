@@ -1,0 +1,228 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Distributed Log Analytics</title>
+    <link rel="stylesheet" href="log-analytics.css">
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: min(440px, 92%);
+            margin: 30px auto;
+        }
+
+        .login-card {
+            padding: 28px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, .12);
+        }
+
+        label {
+            display: block;
+            margin: 16px 0 6px;
+        }
+
+        input, select, button {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 8px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        button:disabled {
+            cursor: wait;
+            opacity: .6;
+        }
+
+        #loginMessage {
+            overflow-wrap: anywhere;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .register-link a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="container">
+        <h1>Distributed Log Analytics System</h1>
+
+        <p class="subtitle">
+            Microservices Monitoring &amp; Log Analytics
+        </p>
+
+        <section class="login-card">
+            <h2>User Login</h2>
+
+            <form id="loginForm">
+                <label for="username">Username</label>
+                <input
+                    id="username"
+                    name="username"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="password">Password</label>
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <label for="role">Account Type</label>
+                <select id="role" name="role" required>
+                    <option value="">Select account type</option>
+                    <option value="ADMIN">Admin</option>
+                    <option value="USER">User</option>
+                </select>
+
+                <button id="loginButton" type="submit">
+                    Login
+                </button>
+            </form>
+
+            <p id="loginMessage" role="status" aria-live="polite"></p>
+
+            <p class="register-link">
+                Don't have an account?
+                <a href="register.html">Register here</a>
+            </p>
+        </section>
+    </main>
+
+    <script>
+        const form = document.getElementById("loginForm");
+        const message = document.getElementById("loginMessage");
+        const button = document.getElementById("loginButton");
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const username =
+                document.getElementById("username").value.trim();
+
+            const password =
+                document.getElementById("password").value;
+
+            const selectedRole =
+                document.getElementById("role").value;
+
+            if (!username || !password || !selectedRole) {
+                message.textContent =
+                    "Please fill in every field.";
+                return;
+            }
+
+            button.disabled = true;
+            message.textContent = "Verifying credentials...";
+
+            try {
+                const credentials = btoa(
+                    `${username}:${password}`
+                );
+
+                const response = await fetch(
+                    "http://localhost:8082/users/me",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Basic ${credentials}`
+                        }
+                    }
+                );
+
+                if (
+                    response.status === 401 ||
+                    response.status === 403
+                ) {
+                    message.textContent =
+                        "Invalid credentials or access denied.";
+                    return;
+                }
+
+                if (!response.ok) {
+                    message.textContent =
+                        `Login verification failed (HTTP ${response.status}).`;
+                    return;
+                }
+
+                const account = await response.json();
+
+                if (!account.username || !account.role) {
+                    message.textContent =
+                        "The server returned an invalid account response.";
+                    return;
+                }
+
+                if (!["ADMIN", "USER"].includes(account.role)) {
+                    message.textContent =
+                        "This account role is not permitted.";
+                    return;
+                }
+
+                if (account.role !== selectedRole) {
+                    message.textContent =
+                        `This account is registered as ${account.role}. ` +
+                        "Please select the matching account type.";
+                    return;
+                }
+
+                sessionStorage.setItem(
+                    "loggedInUser",
+                    account.username
+                );
+
+                sessionStorage.setItem(
+                    "loggedInRole",
+                    account.role
+                );
+
+                // Redirect according to the verified account role
+                if (account.role === "ADMIN") {
+                    window.location.replace("ai-dashboard.html");
+                } else {
+                    window.location.replace("log-analytics.html");
+                }
+
+            } catch (error) {
+                console.error("Login error:", error);
+
+                message.textContent =
+                    "Cannot connect to User Service. " +
+                    "Check that it is running on port 8082.";
+            } finally {
+                button.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
